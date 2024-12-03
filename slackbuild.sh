@@ -30,7 +30,7 @@ search(){
     echo "---> Get ChangeLog"
     echo "### Searching Package ###" >> $LOGDIR$LOGFILE$TIME.log
     cd $CHANGELOG
-#    wget https://slackbuilds.org/slackbuilds/$SLACKWARE_VERSION/ChangeLog.txt -a $LOGDIR$LOGFILE$TIME.log
+    wget https://slackbuilds.org/slackbuilds/$SLACKWARE_VERSION/ChangeLog.txt -a $LOGDIR$LOGFILE$TIME.log
     echo "---> Searching Package..."
     SEARCH=`cat ChangeLog.txt | grep "/$ARG:" | head -1 | cut -d: -f1`
     PACKAGE=`echo $SEARCH | cut -d/ -f2`
@@ -77,11 +77,12 @@ clean(){
 
 
 install(){
+    INSTALL=`tac $LOGDIR$LOGFILE$TIME.log | head -2 | cut -d" " -f3`
+
     echo "---> Installing Package"
     echo "### Installing Package ###" >> $LOGDIR$LOGFILE$TIME.log
 
-    INSTALL=`tac $LOGDIR$LOGFILE$TIME.log | head -2 | cut -d" " -f3`
-    installpgk $INSTALL > $LOGDIR$LOGFILE$TIME.log 2>1
+    installpkg $INSTALL
 }
 
 
